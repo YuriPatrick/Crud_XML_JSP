@@ -60,37 +60,39 @@ public class ProdutoServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Metodo doPost com as requisições de salvar,editar e deletar. auto_increment.
+	 * 
+	 * @param HttpServletRequest  request
+	 * @param HttpServletResponse response
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		Logger logger = Logger.getLogger("controller.ProdutoServlet");
 
 		// logs debug
 		if (logger.isDebugEnabled()) {
 			logger.debug("ProdutoServlet.doPost()");
 		}
 
-		// logs exception
-
-		// Logger logger = Logger.getLogger("ProdutoServlet");
+		logger.info("iniciando ação");
+		logger.debug("debug");
 
 		String acao = request.getParameter("acao_form");
 
-		// logger.info("Iniciando procedimentos");
-
 		if (acao != null) {
 			if (acao.equalsIgnoreCase("salvar")) {
-				int id = Integer.parseInt(request.getParameter(ID_PROD));
+				int idProd = Integer.parseInt(request.getParameter(ID_PROD));
 				String nome = request.getParameter(NOM_PROD);
 				String descricao = request.getParameter(DESC_PROD);
 				int qnt = Integer.parseInt(request.getParameter(QNT_PROD));
 				String obs = request.getParameter(OBS_PROD);
-				Produto produto = new Produto(id, nome, descricao, qnt, obs);
+				Produto produto = new Produto(idProd, nome, descricao, qnt, obs);
 
 				// logger.debug("Criando novo objeto produto");
 
-				Produto produtoMapa = operacoes.obter(id);
+				Produto produtoMapa = operacoes.obter(idProd);
 				if (produtoMapa == null) {
 					id = operacoes.proximoId();
 				}
@@ -127,7 +129,8 @@ public class ProdutoServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("form.jsp");
 		dispatcher.forward(request, response);
 
-		logger.info("Messagem de erro");
+		//logger.info("Messagem de erro");
+		logger.info("Ações concluidas");
 	}
 
 	private void setID(HttpServletRequest request) {

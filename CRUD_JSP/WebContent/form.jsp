@@ -6,7 +6,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="WEB-INF/tags.tld" prefix="m" %>
+<%@ taglib uri="WEB-INF/tags.tld" prefix="m"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -22,113 +22,145 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script src="js/controle.js"></script>
 
+<style>
+.center {
+	position: absolute;
+	margin-left: 4%;
+	margin-top: 6%;
+	width: 75%;
+}
+
+.right {
+	position: absolute;
+	margin-left: 19%;
+	margin-top: 6%;
+}
+</style>
+
 </head>
 
 <body>
 
-	<!-- Form para carregar os dados no XML -->
+	<jsp:include page="index.jsp" />
 
-	<form onSubmit="return validar();" name="form" action="ProdutoServlet"
-		class="form form-horizontal" method="post"
-		style="margin-left: 1%; margin-top: 1%">
 
-		<input type="hidden" name="acao_form" value="padrao"/> 
-		<input type="hidden"name="id_table" />
+	<div class="center">
+	
+		<!-- Form para carregar os dados no XML -->
+		<form onSubmit="return validar();" name="form" action="ProdutoServlet"
+			class="form form-horizontal" method="post"
+			style="margin-left: 1%; margin-top: 1%">
 
-		<div class="form-group">
-			<div class="col-md-3">
+			<input type="hidden" name="acao_form" value="padrao" /> <input
+				type="hidden" name="id_table" />
 
-				<label>ID</label> 
-				<m:inputId />
+
+			<div class="form-group">
+				<div class="col-md-3">
+
+					<label>ID</label>
+					<m:inputId />
+				</div>
 			</div>
-		</div>
 
-		<div class="form-group">
-			<div class="col-md-3">
-				<label>Nome</label> <input type="text" class="form-control"
-					name="nomProd" value="${produto.nome}" pattern="[A-Za-z]{4,30}"
-					id="nomProd" placeholder="Nome Produto" required>
+			<div class="form-group">
+				<div class="col-md-3">
+					<label>Nome</label> 
+					<input type="text" class="form-control" name="nomProd" value="${produto.nome}" pattern="[A-Za-z]{4,30}"
+						id="nomProd" placeholder="Nome Produto" required>
+				</div>
 			</div>
-		</div>
 
-		<div class="form-group">
-			<div class="col-md-3">
-				<label>Descrição</label> <input type="text" class="form-control"
-					id="descProd" value="${produto.descricao}" name="descProd"
-					pattern="([^\s][A-z0-9À-ž\s]+{4,50})"
-					placeholder="Descrição Produto">
+			<div class="form-group">
+				<div class="col-md-3">
+					<label>Descrição</label> 
+					<input type="text" class="form-control"
+						id="descProd" value="${produto.descricao}" name="descProd" pattern="([^\s][A-z0-9À-ž\s]+{4,50})"
+						placeholder="Descrição Produto">
+				</div>
 			</div>
-		</div>
 
-		<div class="form-group">
-			<div class="col-md-3">
-				<label>Quantidade</label> <input type="number" class="form-control"
-					id="qntProd" name="qntProd" value="${produto.qnt}" min="1"
-					placeholder="Quantidade Produto">
+			<div class="form-group">
+				<div class="col-md-3">
+					<label>Quantidade</label> 
+					<input type="number" class="form-control" id="qntProd" name="qntProd" value="${produto.qnt}" min="1"
+						placeholder="Quantidade Produto">
+				</div>
 			</div>
-		</div>
 
-		<div class="form-group">
-			<div class="col-md-3">
-				<label>Observação</label> <input type="text" class="form-control"
-					id="obsProd" name="obsProd" value="${produto.obs}"
-					pattern="([^\s][A-z0-9À-ž\s]+)" placeholder="Observação Produto">
+			<div class="form-group">
+				<div class="col-md-3">
+					<label>Observação</label> 
+					<input type="text" class="form-control" id="obsProd" name="obsProd" value="${produto.obs}"
+						pattern="([^\s][A-z0-9À-ž\s]+)" placeholder="Observação Produto">
+				</div>
 			</div>
-		</div>
+			<div class="form-group">
+				<div class="col-md-3">
+					<button type="submit" value="salvar" onclick="setAction('salvar')" class="btn btn-info">Salvar</button>
+				</div>
+			</div>
 
-		<button type="submit" value="salvar" onclick="setAction('salvar')"
-			class="btn btn-info">Salvar</button>
+		</form>
+	</div>
 
-	</form>
 
-	<!-- Form para listagem e edição dos dados no XML -->
 
-	<form onSubmit="return desabilitar();" name="form_table"
-		action="ProdutoServlet" class="form form-horizontal" method="post">
+	<dir class="right">
 
-		<%
-			List<Produto> listaProdutos = (List<Produto>) request.getAttribute("listaproduto");
+		<!-- Form para listagem e edição dos dados no XML -->
+		<form onSubmit="return desabilitar();" name="form_table"
+			action="ProdutoServlet" class="form form-horizontal" method="post">
+
+			<%
+				List<Produto> listaProdutos = (List<Produto>) request.getAttribute("listaproduto");
 			request.setAttribute("produto", listaProdutos);
-		%>
-		<br>
+			%>
+			<br>
 
-		<div class="w-100 p-3" style="background-color: #eee;">
-			<table id="table" class="table table-dark">
-				<thead>
-					<tr>
-						<th scope="col">ID Produto</th>
-						<th scope="col">Nome Produto</th>
-						<th scope="col">Descrição Produto</th>
-						<th scope="col">Quantidade Produto</th>
-						<th scope="col">Observação Produto</th>
-					</tr>
-				</thead>
-
-				<tbody>
-					<c:forEach var="produto" items="${produto}">
-						<tr id="idtbl">
-							<td>${produto.id}</td>
-							<td>${produto.nome}</td>
-							<td>${produto.descricao}</td>
-							<td>${produto.qnt}</td>
-							<td>${produto.obs}</td>
-
-							<td><button type="submit" value="editar" id="editar"
-									onclick="setEditar_form2('editar'); setId('${produto.id}')"
-									class="btn btn-info">Editar</button></td>
-
-							<td><button type="submit" value="deletar"
-									onclick="setAction_form2('deletar'); setId('${produto.id}'); return confirmarDelete();"
-									class="btn btn-info">Deletar</button></td>
+			<div class="w-100 p-3" style="background-color:">
+				<table id="dtBasicExample" class="table table-dark">
+					<thead>
+						<tr>
+							<th scope="col">ID Produto</th>
+							<th scope="col">Nome Produto</th>
+							<th scope="col">Descrição Produto</th>
+							<th scope="col">Quantidade Produto</th>
+							<th scope="col">Observação Produto</th>
 						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-		</div>
+					</thead>
 
-		<input type="hidden" name="acao_form" /> <input type="hidden"
-			name="id_table" />
-	</form>
+					<tbody>
+						<c:forEach var="produto" items="${produto}">
+							<tr id="idtbl">
+								<td>${produto.id}</td>
+								<td>${produto.nome}</td>
+								<td>${produto.descricao}</td>
+								<td>${produto.qnt}</td>
+								<td>${produto.obs}</td>
+
+								<td><button type="submit" value="editar" id="editar"
+										onclick="setEditar_form2('editar'); setId('${produto.id}')"
+										class="btn btn-info">Editar</button></td>
+
+								<td><button type="submit" value="deletar"
+										onclick="setAction_form2('deletar'); setId('${produto.id}'); return confirmarDelete();"
+										class="btn btn-info">Deletar</button></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+
+			<input type="hidden" name="acao_form" /> 
+			<input type="hidden" name="id_table" />
+		</form>
+
+	</dir>
+
+
+
+
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script

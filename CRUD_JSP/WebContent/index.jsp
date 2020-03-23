@@ -17,16 +17,16 @@
 <body>
 
 
-
 	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 		<header class="masthead mb-auto">
 		<div class="inner">
-			<nav class="nav nav-masthead justify-content-center"> <a
-				class="nav-link active" href="index.jsp">Home</a> 
-				<a class="nav-link" href="./ProdutoServlet">Produto</a> 
-				<a class="nav-link" href="#">Cliente	</a> </nav>
+			<h3 class="masthead-brand">Controle de Produto</h3>
+			<nav class="nav nav-masthead justify-content-center">
+			<a class="nav-link active" href="./ProdutoServlet">Produto</a> 
+			<a class="nav-link active" href="#">Cliente </a> </nav>
 		</div>
 		</header>
+
 		
 	</div>
 
