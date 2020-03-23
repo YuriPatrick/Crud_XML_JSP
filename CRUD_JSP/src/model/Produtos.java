@@ -3,6 +3,9 @@ package model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe responsável na criação do ID com auto_increment {@link Produto}
+ **/
 public class Produtos {
 	private Map<Integer, Produto> produtos = new HashMap<>();
 	private static int id;
@@ -38,5 +41,4 @@ public class Produtos {
 	public Produto getProduto(Integer id) {
 		return produtos.get(id);
 	}
-
 }

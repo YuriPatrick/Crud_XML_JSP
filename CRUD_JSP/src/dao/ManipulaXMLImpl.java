@@ -195,7 +195,6 @@ public class ManipulaXMLImpl implements ManipulaXML {
 			return p;
 
 		} catch (Exception e) {
-			// TODO: Pesquisar sobre o Log4j
 			System.err.println(e);
 		}
 		return new Produtos();
