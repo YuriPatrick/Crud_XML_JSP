@@ -7,6 +7,8 @@ public class TestLogger {
 final static Logger logger = Logger.getLogger(TestLogger.class);
 	
 	public static void main(String[] args) {
+		
+		Logger logger = Logger.getLogger("br.com.MinhaClasse");
 
 		TestLogger obj = new TestLogger();
 		

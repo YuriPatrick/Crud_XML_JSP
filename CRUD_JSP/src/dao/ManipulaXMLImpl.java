@@ -60,6 +60,8 @@ public class ManipulaXMLImpl implements ManipulaXML {
 			logger.debug("ManipulaXMLImpl.gravar()");
 		}
 
+		logger.info("Messagem de erro");
+
 		Map<Integer, Produto> mapa = p.getProdutos();
 		try {
 			docBuilder = builderFactory.newDocumentBuilder();
@@ -143,6 +145,13 @@ public class ManipulaXMLImpl implements ManipulaXML {
 	 */
 	@Override
 	public Produtos ler() {
+
+		// logs debug
+		if (logger.isDebugEnabled()) {
+			logger.debug("ManipulaXMLImpl.ler()");
+		}
+
+		logger.info("Messagem de erro");
 
 		try {
 			Produtos p = new Produtos();

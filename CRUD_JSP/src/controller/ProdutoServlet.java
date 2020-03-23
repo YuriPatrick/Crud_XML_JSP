@@ -68,26 +68,29 @@ public class ProdutoServlet extends HttpServlet {
 
 		// logs debug
 		if (logger.isDebugEnabled()) {
-			logger.debug("ProdutoServlet.execute()");
+			logger.debug("ProdutoServlet.doPost()");
 		}
 
 		// logs exception
-		logger.error("Messagem de erro", new Exception("Error:"));
-		logger.trace("Entering application.");
 
+		// Logger logger = Logger.getLogger("ProdutoServlet");
 
 		String acao = request.getParameter("acao_form");
 
+		// logger.info("Iniciando procedimentos");
+
 		if (acao != null) {
 			if (acao.equalsIgnoreCase("salvar")) {
-				int idProd = Integer.parseInt(request.getParameter(ID_PROD));
+				int id = Integer.parseInt(request.getParameter(ID_PROD));
 				String nome = request.getParameter(NOM_PROD);
 				String descricao = request.getParameter(DESC_PROD);
 				int qnt = Integer.parseInt(request.getParameter(QNT_PROD));
 				String obs = request.getParameter(OBS_PROD);
-				Produto produto = new Produto(idProd, nome, descricao, qnt, obs);
+				Produto produto = new Produto(id, nome, descricao, qnt, obs);
 
-				Produto produtoMapa = operacoes.obter(idProd);
+				// logger.debug("Criando novo objeto produto");
+
+				Produto produtoMapa = operacoes.obter(id);
 				if (produtoMapa == null) {
 					id = operacoes.proximoId();
 				}
@@ -124,6 +127,7 @@ public class ProdutoServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("form.jsp");
 		dispatcher.forward(request, response);
 
+		logger.info("Messagem de erro");
 	}
 
 	private void setID(HttpServletRequest request) {
