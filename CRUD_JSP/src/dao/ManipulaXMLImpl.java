@@ -18,6 +18,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.log4j.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,6 +33,8 @@ import model.Produtos;
  * Classe responsável na manipulação do XML {@link ManipulaXML}
  **/
 public class ManipulaXMLImpl implements ManipulaXML {
+
+	private static final Logger logger = Logger.getLogger(ManipulaXMLImpl.class);
 
 	DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder docBuilder;
@@ -51,6 +54,12 @@ public class ManipulaXMLImpl implements ManipulaXML {
 	 */
 	@Override
 	public void gravar(Produtos p) {
+
+		// logs debug
+		if (logger.isDebugEnabled()) {
+			logger.debug("ManipulaXMLImpl.gravar()");
+		}
+
 		Map<Integer, Produto> mapa = p.getProdutos();
 		try {
 			docBuilder = builderFactory.newDocumentBuilder();

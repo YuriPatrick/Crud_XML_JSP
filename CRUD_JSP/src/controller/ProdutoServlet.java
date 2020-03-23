@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
+import dao.ManipulaXMLImpl;
 import model.Produto;
 
 /**
@@ -17,6 +20,8 @@ import model.Produto;
  */
 @WebServlet("/ProdutoServlet")
 public class ProdutoServlet extends HttpServlet {
+
+	private static final Logger logger = Logger.getLogger(ManipulaXMLImpl.class);
 
 	private static final String ID_PROD = "idProd";
 
@@ -60,6 +65,16 @@ public class ProdutoServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		// logs debug
+		if (logger.isDebugEnabled()) {
+			logger.debug("ProdutoServlet.execute()");
+		}
+
+		// logs exception
+		logger.error("Messagem de erro", new Exception("Error:"));
+		logger.trace("Entering application.");
+
 
 		String acao = request.getParameter("acao_form");
 
