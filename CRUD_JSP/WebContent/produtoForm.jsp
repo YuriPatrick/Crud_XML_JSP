@@ -1,4 +1,4 @@
-<%@page import="controller.Operacoes"%>
+<%@page import="operation.OperacoesProduto"%>
 <%@page import="javax.xml.parsers.ParserConfigurationException"%>
 <%@page import="model.Produto"%>
 <%@page import="java.util.List"%>
@@ -43,11 +43,10 @@
 
 	<jsp:include page="index.jsp" />
 
-
 	<div class="center">
-	
+
 		<!-- Form para carregar os dados no XML -->
-		<form onSubmit="return validar();" name="form" action="ProdutoServlet"
+		<form onSubmit="return validar();" name="form" action="produto"
 			class="form form-horizontal" method="post"
 			style="margin-left: 1%; margin-top: 1%">
 
@@ -59,45 +58,46 @@
 				<div class="col-md-3">
 
 					<label>ID</label>
-					<m:inputId />
+					<m:inputIdProduto />
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-md-3">
-					<label>Nome</label> 
-					<input type="text" class="form-control" name="nomProd" value="${produto.nome}" pattern="[A-Za-z]{4,30}"
+					<label>Nome</label> <input type="text" class="form-control"
+						name="nomProd" value="${produto.nome}" pattern="[A-Za-z]{4,30}"
 						id="nomProd" placeholder="Nome Produto" required>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-md-3">
-					<label>Descrição</label> 
-					<input type="text" class="form-control"
-						id="descProd" value="${produto.descricao}" name="descProd" pattern="([^\s][A-z0-9À-ž\s]+{4,50})"
+					<label>Descrição</label> <input type="text" class="form-control"
+						id="descProd" value="${produto.descricao}" name="descProd"
+						pattern="([^\s][A-z0-9À-ž\s]+{4,50})"
 						placeholder="Descrição Produto">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-md-3">
-					<label>Quantidade</label> 
-					<input type="number" class="form-control" id="qntProd" name="qntProd" value="${produto.qnt}" min="1"
+					<label>Quantidade</label> <input type="number" class="form-control"
+						id="qntProd" name="qntProd" value="${produto.qnt}" min="1"
 						placeholder="Quantidade Produto">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-md-3">
-					<label>Observação</label> 
-					<input type="text" class="form-control" id="obsProd" name="obsProd" value="${produto.obs}"
+					<label>Observação</label> <input type="text" class="form-control"
+						id="obsProd" name="obsProd" value="${produto.obs}"
 						pattern="([^\s][A-z0-9À-ž\s]+)" placeholder="Observação Produto">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-md-3">
-					<button type="submit" value="salvar" onclick="setAction('salvar')" class="btn btn-info">Salvar</button>
+					<button type="submit" value="salvar" onclick="setAction('salvar')"
+						class="btn btn-info">Salvar</button>
 				</div>
 			</div>
 
@@ -105,12 +105,11 @@
 	</div>
 
 
-
 	<dir class="right">
 
 		<!-- Form para listagem e edição dos dados no XML -->
 		<form onSubmit="return desabilitar();" name="form_table"
-			action="ProdutoServlet" class="form form-horizontal" method="post">
+			action="produto" class="form form-horizontal" method="post">
 
 			<%
 				List<Produto> listaProdutos = (List<Produto>) request.getAttribute("listaproduto");
@@ -152,13 +151,11 @@
 				</table>
 			</div>
 
-			<input type="hidden" name="acao_form" /> 
-			<input type="hidden" name="id_table" />
+			<input type="hidden" name="acao_form" /> <input type="hidden"
+				name="id_table" />
 		</form>
 
 	</dir>
-
-
 
 
 

@@ -9,7 +9,11 @@
 	<short-name>Example TLD with Body</short-name>
 
 	<tag>
-		<name>inputId</name>
+		<name>inputIdProduto</name>
 		<tag-class>tagLibs.MinhaTagLib</tag-class>
+	</tag>
+	<tag>
+		<name>inputIdCliente</name>
+		<tag-class>tagLibs.TagLibIDcliente</tag-class>
 	</tag>
 </taglib>

@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Classe responsável na criação do ID com auto_increment {@link Produto}
+ * Classe responsável na manipulação do produto pelo ID do HashMap
+ * {@link Produto}
  **/
 public class Produtos {
 	private Map<Integer, Produto> produtos = new HashMap<>();
@@ -33,11 +34,11 @@ public class Produtos {
 	public void adicionaProduto(Produto p) {
 		produtos.put(p.getId(), p);
 	}
-	
+
 	public void excluirProduto(Integer id) {
 		produtos.remove(id);
 	}
-	
+
 	public Produto getProduto(Integer id) {
 		return produtos.get(id);
 	}

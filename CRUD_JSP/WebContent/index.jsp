@@ -22,8 +22,8 @@
 		<div class="inner">
 			<h3 class="masthead-brand">Controle de Produto</h3>
 			<nav class="nav nav-masthead justify-content-center">
-			<a class="nav-link active" href="./ProdutoServlet">Produto</a> 
-			<a class="nav-link active" href="#">Cliente </a> </nav>
+			<a class="nav-link active" href="./produto">Produto</a> 
+			<a class="nav-link active" href="./cliente">Cliente </a> </nav>
 		</div>
 		</header>
 

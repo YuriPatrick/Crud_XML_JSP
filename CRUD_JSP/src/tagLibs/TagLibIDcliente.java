@@ -10,8 +10,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 /**
  * Classe TagLib para ocultar botão.  
 */
-public class MinhaTagLib extends TagSupport {
-
+public class TagLibIDcliente extends TagSupport {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -20,11 +19,11 @@ public class MinhaTagLib extends TagSupport {
 
 		ServletRequest request = pageContext.getRequest();
 		boolean ler = true;
-		Integer produtoId = (Integer) request.getAttribute("produtoId");
+		Integer clienteId = (Integer) request.getAttribute("clienteId");
 
 		try {
-			out.print("<input type=\"number\" class=\"form-control\" id=\"idProd\" value=\"" + produtoId
-					+ "\" min=\"1\" placeholder=\"ID Produto\" " + "name=\"idProd\"" + (ler ? "readonly" : "") + "/>");
+			out.print("<input type=\"number\" class=\"form-control\" id=\"idClie\" value=\"" + clienteId
+					+ "\" min=\"1\" placeholder=\"ID Cliente\" " + "name=\"idClie\"" + (ler ? "readonly" : "") + "/>");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -32,5 +31,4 @@ public class MinhaTagLib extends TagSupport {
 
 		return SKIP_BODY;
 	}
-
 }

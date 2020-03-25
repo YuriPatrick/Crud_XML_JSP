@@ -32,9 +32,9 @@ import model.Produtos;
 /**
  * Classe responsável na manipulação do XML {@link ManipulaXML}
  **/
-public class ManipulaXMLImpl implements ManipulaXML {
+public class ManipulaXMLProduto implements ManipulaXML {
 
-	private static final Logger logger = Logger.getLogger(ManipulaXMLImpl.class);
+	private static final Logger logger = Logger.getLogger(ManipulaXMLProduto.class);
 
 	DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder docBuilder;
@@ -44,7 +44,7 @@ public class ManipulaXMLImpl implements ManipulaXML {
 
 	private String caminhoArquivo;
 
-	public ManipulaXMLImpl(String caminhoArquivo) {
+	public ManipulaXMLProduto(String caminhoArquivo) {
 		this.caminhoArquivo = caminhoArquivo;
 	}
 
@@ -53,16 +53,18 @@ public class ManipulaXMLImpl implements ManipulaXML {
 	 * metodo HashMap para a gravação dos dados em lista {@link ManipulaXML}
 	 */
 	@Override
-	public void gravar(Produtos p) {
+	public void gravar(Object p) {
 
-		// logs debug
-		if (logger.isDebugEnabled()) {
-			logger.debug("ManipulaXMLImpl.gravar()");
-		}
+		Logger logger = Logger.getLogger("dao.ManipulaXMLImpl");
 
-		logger.info("Messagem de erro");
+		/*
+		 * logs debug if (logger.isDebugEnabled()) {
+		 * logger.debug("ManipulaXMLImpl.gravar()"); }
+		 * 
+		 * logger.info("Messagem de erro");
+		 */
 
-		Map<Integer, Produto> mapa = p.getProdutos();
+		Map<Integer, Produto> mapa = ((Produtos) p).getProdutos();
 		try {
 			docBuilder = builderFactory.newDocumentBuilder();
 			doc = docBuilder.newDocument();
@@ -72,6 +74,9 @@ public class ManipulaXMLImpl implements ManipulaXML {
 
 			for (Map.Entry<Integer, Produto> item : mapa.entrySet()) {
 				Produto produto = item.getValue();
+
+				logger.info("Inicio Gravação");
+				logger.debug("debug");
 
 				Element produtoXML = doc.createElement("Produtos");
 				Attr id = doc.createAttribute("ID");
@@ -126,6 +131,8 @@ public class ManipulaXMLImpl implements ManipulaXML {
 			bw.flush();
 			bw.close();
 
+			logger.info("Gravação finalizada");
+
 		} catch (TransformerConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -146,12 +153,7 @@ public class ManipulaXMLImpl implements ManipulaXML {
 	@Override
 	public Produtos ler() {
 
-		// logs debug
-		if (logger.isDebugEnabled()) {
-			logger.debug("ManipulaXMLImpl.ler()");
-		}
-
-		logger.info("Messagem de erro");
+		Logger logger = Logger.getLogger("dao.ManipulaXMLImpl");
 
 		try {
 			Produtos p = new Produtos();
@@ -173,6 +175,9 @@ public class ManipulaXMLImpl implements ManipulaXML {
 
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 
+					logger.info("Inicio Leitura");
+					logger.debug("debug");
+
 					Element eElement = (Element) node;
 
 					produto = new Produto();
@@ -189,6 +194,8 @@ public class ManipulaXMLImpl implements ManipulaXML {
 					produto.setObs(eElement.getElementsByTagName("Observacao").item(0).getTextContent());
 
 					p.adicionaProduto(produto);
+
+					logger.info("Gravação finalizada");
 
 				}
 			}

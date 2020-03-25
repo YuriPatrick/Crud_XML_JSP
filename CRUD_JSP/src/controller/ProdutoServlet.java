@@ -12,16 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import dao.ManipulaXMLImpl;
+import dao.ManipulaXMLProduto;
 import model.Produto;
+import operation.OperacoesProduto;
+import operation.OperacoesImplProduto;
 
 /**
- * Servlet implementation class ProtudoServlet
+ * Servlet implementado o cliente com requisições de salvar. {@link HttpServlet}
  */
-@WebServlet("/ProdutoServlet")
+@WebServlet(name = "ProdutoServlet", value = "/produto")
 public class ProdutoServlet extends HttpServlet {
 
-	private static final Logger logger = Logger.getLogger(ManipulaXMLImpl.class);
+	private static final Logger logger = Logger.getLogger(ManipulaXMLProduto.class);
 
 	private static final String ID_PROD = "idProd";
 
@@ -39,14 +41,14 @@ public class ProdutoServlet extends HttpServlet {
 
 	private static final String CAMINHO_ARQUIVO = "C:\\Users\\f0fp631\\Documents\\Produtos.xml";
 
-	private Operacoes operacoes;
+	private OperacoesProduto operacoes;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public ProdutoServlet() {
 		super();
-		operacoes = new OperacoesImpl(CAMINHO_ARQUIVO);
+		operacoes = new OperacoesImplProduto(CAMINHO_ARQUIVO);
 		id = operacoes.proximoId();
 	}
 
@@ -60,8 +62,9 @@ public class ProdutoServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 * Metodo doPost com as requisições de salvar,editar e deletar. auto_increment.
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response) Metodo doPost com as requisições de salvar,editar e deletar.
+	 *      auto_increment.
 	 * 
 	 * @param HttpServletRequest  request
 	 * @param HttpServletResponse response
@@ -76,10 +79,10 @@ public class ProdutoServlet extends HttpServlet {
 			logger.debug("ProdutoServlet.doPost()");
 		}
 
+		String acao = request.getParameter("acao_form");
+
 		logger.info("iniciando ação");
 		logger.debug("debug");
-
-		String acao = request.getParameter("acao_form");
 
 		if (acao != null) {
 			if (acao.equalsIgnoreCase("salvar")) {
@@ -90,7 +93,7 @@ public class ProdutoServlet extends HttpServlet {
 				String obs = request.getParameter(OBS_PROD);
 				Produto produto = new Produto(idProd, nome, descricao, qnt, obs);
 
-				// logger.debug("Criando novo objeto produto");
+				logger.debug("Criando novo");
 
 				Produto produtoMapa = operacoes.obter(idProd);
 				if (produtoMapa == null) {
@@ -99,6 +102,8 @@ public class ProdutoServlet extends HttpServlet {
 				operacoes.salvar(produto);
 				setID(request);
 
+				logger.info("Salvado Produto");
+
 			} else if (acao.equals("editar")) {
 				String id = request.getParameter("id_table");
 				Produto produtoEditar = operacoes.obter(Integer.parseInt(id));
@@ -106,7 +111,7 @@ public class ProdutoServlet extends HttpServlet {
 				request.setAttribute("produtoId", Integer.parseInt(id));
 				request.setAttribute("ocultar", "true");
 
-				System.out.println(produtoEditar);
+				logger.info("Editado Produto");
 
 			} else if (acao.equals("deletar")) {
 				String id = request.getParameter("id_table");
@@ -115,6 +120,8 @@ public class ProdutoServlet extends HttpServlet {
 				Produto produto = new Produto();
 				produto.setId(Integer.parseInt(id));
 				setID(request);
+
+				logger.info("Deletando Produto");
 
 			} else if (acao.equals("padrao")) {
 				setID(request);
@@ -126,10 +133,10 @@ public class ProdutoServlet extends HttpServlet {
 
 		List<Produto> listaProdutos = operacoes.listaProdutos();
 		request.setAttribute("listaproduto", listaProdutos);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("form.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("produtoForm.jsp");
 		dispatcher.forward(request, response);
 
-		//logger.info("Messagem de erro");
+		// logger.info("Messagem de erro");
 		logger.info("Ações concluidas");
 	}
 
