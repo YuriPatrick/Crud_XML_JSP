@@ -7,19 +7,20 @@ import java.util.Map;
 
 import dao.ManipulaXML;
 import dao.ManipulaXMLCliente;
-import dao.ManipulaXMLProduto;
 import model.Cliente;
 import model.Clientes;
-import model.Produtos;
 
 /**
  * Classe responsável na operações de manipulação no arquivo XML
- * {@link OperacoesCliente}
+ * {@link Operacoes<Object>}
  **/
-public class OperacoesImplCliente implements OperacoesCliente {
+public class OperacoesImplCliente implements Operacoes<Object> {
 
 	private Clientes clientes;
-	private ManipulaXML manipulaXml;
+	private ManipulaXML<Object> manipulaXml;
+
+	public OperacoesImplCliente() {
+	}
 
 	/** Operação para leitura do arquivo {@link ManipulaXMLCliente} */
 	public OperacoesImplCliente(String caminhoXML) {
@@ -29,14 +30,15 @@ public class OperacoesImplCliente implements OperacoesCliente {
 
 	/** Operação para salvar e gravar o arquivo XML {@link ManipulaXMLCliente} */
 	@Override
-	public void salvar(Cliente p) throws IOException {
-		clientes.adicionaCliente(p);
+	public void salvar(Object c) throws IOException {
+		clientes.adicionaCliente((Cliente) c);
 		manipulaXml.gravar(clientes);
 	}
 
 	/**
 	 * Operação para excluir registro do XML por meio da leitura em lista usando
-	 * HashMap {@link ManipulaXML}
+	 * HashMap {@link Clientes} e manipularXML {@link ManipulaXMLCliente} para
+	 * gravar alteração.
 	 */
 	@Override
 	public void excluir(Integer id) throws IOException {
@@ -47,7 +49,7 @@ public class OperacoesImplCliente implements OperacoesCliente {
 
 	/**
 	 * Operação para obter registro do XML por meio da leitura em lista usando
-	 * HashMap {@link ManipulaXML}
+	 * HashMap {@link Clientes}
 	 */
 	@Override
 	public Cliente obter(Integer id) {
@@ -55,11 +57,11 @@ public class OperacoesImplCliente implements OperacoesCliente {
 	}
 
 	/**
-	 * Operação para listar os registro do XML por meio de lista usando HashMap
-	 * {@link ManipulaXML}
+	 * Operação para listar os registro por meio de lista usando HashMap
+	 * {@link Clientes}
 	 */
 	@Override
-	public List<Cliente> listaClientes() {
+	public List<Cliente> listar() {
 		List<Cliente> lista = new ArrayList<Cliente>();
 		Map<Integer, Cliente> mapa = clientes.getClientes();
 		if (mapa != null) {

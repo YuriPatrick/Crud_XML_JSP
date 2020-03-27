@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Classe Cliente
+ **/
 public class Cliente {
 	private int id;
 

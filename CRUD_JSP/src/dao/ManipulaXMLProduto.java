@@ -32,7 +32,7 @@ import model.Produtos;
 /**
  * Classe responsável na manipulação do XML {@link ManipulaXML}
  **/
-public class ManipulaXMLProduto implements ManipulaXML {
+public class ManipulaXMLProduto implements ManipulaXML<Object> {
 
 	private static final Logger logger = Logger.getLogger(ManipulaXMLProduto.class);
 

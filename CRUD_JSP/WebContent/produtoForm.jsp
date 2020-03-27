@@ -1,4 +1,4 @@
-<%@page import="operation.OperacoesProduto"%>
+<%@page import="operation.Operacoes"%>
 <%@page import="javax.xml.parsers.ParserConfigurationException"%>
 <%@page import="model.Produto"%>
 <%@page import="java.util.List"%>
@@ -14,7 +14,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Formulario_XML</title>
+<title>Produto</title>
 
 <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -66,7 +66,7 @@
 				<div class="col-md-3">
 					<label>Nome</label> <input type="text" class="form-control"
 						name="nomProd" value="${produto.nome}" pattern="[A-Za-z]{4,30}"
-						id="nomProd" placeholder="Nome Produto" required>
+						id="nomProd" placeholder="Nome Produto" required />
 				</div>
 			</div>
 
@@ -75,7 +75,7 @@
 					<label>Descrição</label> <input type="text" class="form-control"
 						id="descProd" value="${produto.descricao}" name="descProd"
 						pattern="([^\s][A-z0-9À-ž\s]+{4,50})"
-						placeholder="Descrição Produto">
+						placeholder="Descrição Produto" />
 				</div>
 			</div>
 
@@ -83,7 +83,7 @@
 				<div class="col-md-3">
 					<label>Quantidade</label> <input type="number" class="form-control"
 						id="qntProd" name="qntProd" value="${produto.qnt}" min="1"
-						placeholder="Quantidade Produto">
+						placeholder="Quantidade Produto" />
 				</div>
 			</div>
 
@@ -91,7 +91,7 @@
 				<div class="col-md-3">
 					<label>Observação</label> <input type="text" class="form-control"
 						id="obsProd" name="obsProd" value="${produto.obs}"
-						pattern="([^\s][A-z0-9À-ž\s]+)" placeholder="Observação Produto">
+						pattern="([^\s][A-z0-9À-ž\s]+)" placeholder="Observação Produto" />
 				</div>
 			</div>
 			<div class="form-group">
@@ -156,7 +156,6 @@
 		</form>
 
 	</dir>
-
 
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

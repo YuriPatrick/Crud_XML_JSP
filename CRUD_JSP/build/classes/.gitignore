@@ -1,6 +1,5 @@
-/test/
-/dao/
-/controller/
-/model/
-/tagLibs/
 /operation/
+/testJUnit/
+/controller/
+/dao/
+/model/

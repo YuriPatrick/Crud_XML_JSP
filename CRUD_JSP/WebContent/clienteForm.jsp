@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Cliente</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 
 <script
@@ -64,7 +64,7 @@
 					<label>Sobrenome</label> <input type="text" class="form-control"
 						id="sobreClie" value="${cliente.sobrenome}" name="sobreClie"
 						pattern="([^\s][A-z0-9À-ž\s]+{4,50})"
-						placeholder="Sobrenome Cliente">
+						placeholder="Sobrenome Cliente" required>
 				</div>
 			</div>
 
@@ -74,7 +74,7 @@
 						id="cpfClie" name="cpfClie" value="${cliente.CPF}"
 						pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
 						title="Digite o CPF no formato nnn.nnn.nnn-nn"
-						placeholder="888.888.888-88" />
+						placeholder="888.888.888-88" required />
 				</div>
 			</div>
 
@@ -82,7 +82,8 @@
 				<div class="col-md-3">
 					<label>Data Nascimento</label> <input type="date"
 						class="form-control" id="dataNascClie" name="dataNascClie"
-						value="${cliente.dataNascimento}" placeholder="Data Nascimento">
+						value="${cliente.dataNascimento}" placeholder="Data Nascimento"
+						required>
 				</div>
 			</div>
 
@@ -90,7 +91,8 @@
 				<div class="col-md-3">
 					<label>Localidade</label> <input type="text" class="form-control"
 						id="localClie" name="localClie" value="${cliente.localidade}"
-						pattern="([^\s][A-z0-9À-ž\s]+)" placeholder="Localidade Cliente">
+						pattern="([^\s][A-z0-9À-ž\s]+)" placeholder="Localidade Cliente"
+						required>
 				</div>
 			</div>
 

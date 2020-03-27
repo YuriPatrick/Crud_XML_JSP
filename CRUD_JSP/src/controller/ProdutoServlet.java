@@ -14,11 +14,12 @@ import org.apache.log4j.Logger;
 
 import dao.ManipulaXMLProduto;
 import model.Produto;
-import operation.OperacoesProduto;
+import operation.Operacoes;
 import operation.OperacoesImplProduto;
 
 /**
- * Servlet implementado o cliente com requisições de salvar. {@link HttpServlet}
+ * Servlet implementado o produto com requisições das operações de salvar,
+ * edicar, deletar e listar. {@link HttpServlet}
  */
 @WebServlet(name = "ProdutoServlet", value = "/produto")
 public class ProdutoServlet extends HttpServlet {
@@ -41,7 +42,7 @@ public class ProdutoServlet extends HttpServlet {
 
 	private static final String CAMINHO_ARQUIVO = "C:\\Users\\f0fp631\\Documents\\Produtos.xml";
 
-	private OperacoesProduto operacoes;
+	private Operacoes<Object> operacoes;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -95,7 +96,7 @@ public class ProdutoServlet extends HttpServlet {
 
 				logger.debug("Criando novo");
 
-				Produto produtoMapa = operacoes.obter(idProd);
+				Produto produtoMapa = (Produto) operacoes.obter(idProd);
 				if (produtoMapa == null) {
 					id = operacoes.proximoId();
 				}
@@ -106,7 +107,7 @@ public class ProdutoServlet extends HttpServlet {
 
 			} else if (acao.equals("editar")) {
 				String id = request.getParameter("id_table");
-				Produto produtoEditar = operacoes.obter(Integer.parseInt(id));
+				Produto produtoEditar = (Produto) operacoes.obter(Integer.parseInt(id));
 				request.setAttribute("produto", produtoEditar);
 				request.setAttribute("produtoId", Integer.parseInt(id));
 				request.setAttribute("ocultar", "true");
@@ -131,7 +132,7 @@ public class ProdutoServlet extends HttpServlet {
 			setID(request);
 		}
 
-		List<Produto> listaProdutos = operacoes.listaProdutos();
+		List<Produto> listaProdutos = (List<Produto>) operacoes.listar();
 		request.setAttribute("listaproduto", listaProdutos);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("produtoForm.jsp");
 		dispatcher.forward(request, response);

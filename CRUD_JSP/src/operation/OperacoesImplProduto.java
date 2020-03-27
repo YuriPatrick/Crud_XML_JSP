@@ -6,20 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 import dao.ManipulaXML;
+import dao.ManipulaXMLCliente;
 import dao.ManipulaXMLProduto;
-import model.Cliente;
 import model.Clientes;
 import model.Produto;
 import model.Produtos;
 
 /**
  * Classe responsável na operações de manipulação no arquivo XML
- * {@link OperacoesProduto}
+ * {@link Operacoes<Object>}
  **/
-public class OperacoesImplProduto implements OperacoesProduto {
+public class OperacoesImplProduto implements Operacoes<Object> {
 
 	private Produtos produtos;
-	private ManipulaXML manipulaXml;
+	private ManipulaXML<Object> manipulaXml;
 
 	/** Operação para leitura do arquivo {@link ManipulaXMLProduto} */
 	public OperacoesImplProduto(String caminhoXML) {
@@ -29,14 +29,15 @@ public class OperacoesImplProduto implements OperacoesProduto {
 
 	/** Operação para salvar e gravar o arquivo XML {@link ManipulaXMLProduto} */
 	@Override
-	public void salvar(Produto p) throws IOException {
-		produtos.adicionaProduto(p);
+	public void salvar(Object p) throws IOException {
+		produtos.adicionaProduto((Produto) p);
 		manipulaXml.gravar(produtos);
 	}
 
 	/**
 	 * Operação para excluir registro do XML por meio da leitura em lista usando
-	 * HashMap {@link ManipulaXML}
+	 * HashMap {@link Produtos} e manipularXML {@link ManipulaXMLProduto} para
+	 * gravar alteração.
 	 */
 	@Override
 	public void excluir(Integer id) throws IOException {
@@ -46,7 +47,7 @@ public class OperacoesImplProduto implements OperacoesProduto {
 
 	/**
 	 * Operação para obter registro do XML por meio da leitura em lista usando
-	 * HashMap {@link ManipulaXML}
+	 * HashMap {@link Produtos}
 	 */
 	@Override
 	public Produto obter(Integer id) {
@@ -54,11 +55,11 @@ public class OperacoesImplProduto implements OperacoesProduto {
 	}
 
 	/**
-	 * Operação para listar os registro do XML por meio de lista usando HashMap
-	 * {@link ManipulaXML}
+	 * Operação para listar os registro por meio de lista usando HashMap
+	 * {@link Produtos}
 	 */
 	@Override
-	public List<Produto> listaProdutos() {
+	public List<Produto> listar() {
 		List<Produto> lista = new ArrayList<Produto>();
 		Map<Integer, Produto> mapa = produtos.getProdutos();
 		if (mapa != null) {

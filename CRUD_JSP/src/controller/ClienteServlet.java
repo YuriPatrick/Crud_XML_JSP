@@ -14,12 +14,11 @@ import org.apache.log4j.Logger;
 
 import dao.ManipulaXMLProduto;
 import model.Cliente;
-import model.Produto;
-import operation.OperacoesCliente;
+import operation.Operacoes;
 import operation.OperacoesImplCliente;
 
 /**
- * Servlet implementado o cliente com requisições de salvar. {@link HttpServlet}
+ * Servlet implementado o cliente com requisições da operação de salvar. {@link HttpServlet}
  */
 
 @WebServlet(name = "ClienteServlet", value = "/cliente")
@@ -45,7 +44,7 @@ public class ClienteServlet extends HttpServlet {
 
 	private static final String CAMINHO_ARQUIVO = "C:\\Users\\f0fp631\\Documents\\Clientes.xml";
 
-	private OperacoesCliente operacoes;
+	private Operacoes<Object> operacoes;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -107,7 +106,7 @@ public class ClienteServlet extends HttpServlet {
 			setID(request);
 		}
 
-		List<Cliente> listaClientes = ((OperacoesImplCliente) operacoes).listaClientes();
+		List<Cliente> listaClientes = ((OperacoesImplCliente) operacoes).listar();
 		request.setAttribute("listacliente", listaClientes);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("clienteForm.jsp");
 		dispatcher.forward(request, response);

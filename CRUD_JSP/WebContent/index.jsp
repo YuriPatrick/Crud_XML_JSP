@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Index</title>
 
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/cover.css" rel="stylesheet">
@@ -21,13 +21,13 @@
 		<header class="masthead mb-auto">
 		<div class="inner">
 			<h3 class="masthead-brand">Controle de Produto</h3>
-			<nav class="nav nav-masthead justify-content-center">
-			<a class="nav-link active" href="./produto">Produto</a> 
-			<a class="nav-link active" href="./cliente">Cliente </a> </nav>
+			<nav class="nav nav-masthead justify-content-center"> <a
+				class="nav-link active" href="./produto">Produto</a> <a
+				class="nav-link active" href="./cliente">Cliente </a> </nav>
 		</div>
 		</header>
 
-		
+
 	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
