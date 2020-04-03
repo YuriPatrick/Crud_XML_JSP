@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Produtos>
+<Produtos ID="3">
+<Produto>Parafuso</Produto>
+<Descricao>Motores para VW caminhoes</Descricao>
+<Quantidade>10</Quantidade>
+<Observacao>teste</Observacao>
+</Produtos>
+<Produtos ID="4">
+<Produto>Parafuso</Produto>
+<Descricao>parafuso para motores</Descricao>
+<Quantidade>6</Quantidade>
+<Observacao>teste</Observacao>
+</Produtos>
+<Produtos ID="5">
+<Produto>Parafuso</Produto>
+<Descricao>parafuso para motores</Descricao>
+<Quantidade>40</Quantidade>
+<Observacao>teste</Observacao>
+</Produtos>
+<Produtos ID="6">
+<Produto>motor</Produto>
+<Descricao>motorVW</Descricao>
+<Quantidade>10</Quantidade>
+<Observacao>motorVW</Observacao>
+</Produtos>
+<Produtos ID="7">
+<Produto>Parafuso</Produto>
+<Descricao>parafuso para motores</Descricao>
+<Quantidade>8</Quantidade>
+<Observacao>teste</Observacao>
+</Produtos>
+<Produtos ID="8">
+<Produto>Teste</Produto>
+<Descricao>Motores para BM caminhoes</Descricao>
+<Quantidade>7</Quantidade>
+<Observacao>teste</Observacao>
+</Produtos>
+</Produtos>

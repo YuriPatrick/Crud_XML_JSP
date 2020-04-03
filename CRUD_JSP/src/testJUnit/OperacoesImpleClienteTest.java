@@ -3,8 +3,10 @@ package testJUnit;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import model.Cliente;
 import operation.Operacoes;
@@ -17,6 +19,8 @@ import operation.OperacoesImplCliente;
 public class OperacoesImpleClienteTest {
 
 	Operacoes<Object> operacoesCliente;
+	
+	@Mock
 	String caminho = "C:\\Users\\f0fp631\\Documents\\Clientes.xml";
 
 	Logger logger = Logger.getLogger("testJUnit.OperacoesImpleClienteTest");
@@ -29,13 +33,15 @@ public class OperacoesImpleClienteTest {
 
 	@Test
 	public void testSalvar() {
-		Cliente c = new Cliente(11, "joaa", "silva", "1313", "10/10", "SP");
+		Cliente c = new Cliente(1, "joaa", "silva", "1313", "10/10", "SP");
+		Assert.assertEquals("C:\\Users\\f0fp631\\Documents\\Clientes.xml", caminho);
 		try {
 			operacoesCliente.salvar(c);
+			logger.info("cliente salvo");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		logger.info("cliente salvo");
+		
 	}
 
 	@Test
@@ -54,6 +60,8 @@ public class OperacoesImpleClienteTest {
 
 	@Test
 	public void testListaClientes() {
+		
+		
 		logger.info(operacoesCliente.listar());
 
 	}

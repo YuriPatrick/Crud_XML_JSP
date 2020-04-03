@@ -18,7 +18,8 @@ import operation.Operacoes;
 import operation.OperacoesImplCliente;
 
 /**
- * Servlet implementado o cliente com requisições da operação de salvar. {@link HttpServlet}
+ * Servlet implementado o cliente com requisições da operação de salvar.
+ * {@link HttpServlet}
  */
 
 @WebServlet(name = "ClienteServlet", value = "/cliente")
@@ -83,28 +84,27 @@ public class ClienteServlet extends HttpServlet {
 		logger.debug("debug");
 
 		if (acao != null && acao.equalsIgnoreCase("salvar")) {
-			int idClie = Integer.parseInt(request.getParameter(ID_CLIE));
-			String nomeClie = request.getParameter(NOM_CLIE);
-			String sobreClie = request.getParameter(SOBRE_CLIE);
-			String cpfClie = request.getParameter(CPF_CLIE);
-			String dataNascClie = request.getParameter(DATANASC_CLIE);
-			String localClie = request.getParameter(LOCAL_CLIE);
-			Cliente cliente = new Cliente(idClie, nomeClie, sobreClie, cpfClie, dataNascClie, localClie);
 
-			logger.debug("Criando novo");
-
-			Cliente clienteMapa = (Cliente) operacoes.obter(idClie);
-			if (clienteMapa == null) {
-				id = operacoes.clienteId();
-			}
-			operacoes.salvar(cliente);
-			setID(request);
-
+			salvarCliente(request);
 			logger.info("Salvado Cliente");
+
+			setID(request);
 
 		} else {
 			setID(request);
 		}
+
+		getAll(request, response);
+
+	}
+
+	private void setID(HttpServletRequest request) {
+
+		request.setAttribute("clienteId", id);
+
+	}
+
+	private void getAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		List<Cliente> listaClientes = ((OperacoesImplCliente) operacoes).listar();
 		request.setAttribute("listacliente", listaClientes);
@@ -113,10 +113,22 @@ public class ClienteServlet extends HttpServlet {
 
 	}
 
-	private void setID(HttpServletRequest request) {
+	private void salvarCliente(HttpServletRequest request) throws IOException {
 
-		request.setAttribute("clienteId", id);
+		logger.debug("Criando novo");
+		int idClie = Integer.parseInt(request.getParameter(ID_CLIE));
+		String nomeClie = request.getParameter(NOM_CLIE);
+		String sobreClie = request.getParameter(SOBRE_CLIE);
+		String cpfClie = request.getParameter(CPF_CLIE);
+		String dataNascClie = request.getParameter(DATANASC_CLIE);
+		String localClie = request.getParameter(LOCAL_CLIE);
+		Cliente cliente = new Cliente(idClie, nomeClie, sobreClie, cpfClie, dataNascClie, localClie);
 
+		Cliente clienteMapa = (Cliente) operacoes.obter(idClie);
+		if (clienteMapa == null) {
+			id = operacoes.clienteId();
+		}
+		operacoes.salvar(cliente);
 	}
 
 }

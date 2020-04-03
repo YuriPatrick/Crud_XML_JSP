@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import dao.ManipulaXMLProduto;
+import model.Cliente;
 import model.Produto;
 import operation.Operacoes;
 import operation.OperacoesImplProduto;
@@ -87,39 +88,20 @@ public class ProdutoServlet extends HttpServlet {
 
 		if (acao != null) {
 			if (acao.equalsIgnoreCase("salvar")) {
-				int idProd = Integer.parseInt(request.getParameter(ID_PROD));
-				String nome = request.getParameter(NOM_PROD);
-				String descricao = request.getParameter(DESC_PROD);
-				int qnt = Integer.parseInt(request.getParameter(QNT_PROD));
-				String obs = request.getParameter(OBS_PROD);
-				Produto produto = new Produto(idProd, nome, descricao, qnt, obs);
 
-				logger.debug("Criando novo");
-
-				Produto produtoMapa = (Produto) operacoes.obter(idProd);
-				if (produtoMapa == null) {
-					id = operacoes.proximoId();
-				}
-				operacoes.salvar(produto);
+				salvarProduto(request);
 				setID(request);
 
 				logger.info("Salvado Produto");
 
 			} else if (acao.equals("editar")) {
-				String id = request.getParameter("id_table");
-				Produto produtoEditar = (Produto) operacoes.obter(Integer.parseInt(id));
-				request.setAttribute("produto", produtoEditar);
-				request.setAttribute("produtoId", Integer.parseInt(id));
-				request.setAttribute("ocultar", "true");
 
+				editarProduto(request);
 				logger.info("Editado Produto");
 
 			} else if (acao.equals("deletar")) {
-				String id = request.getParameter("id_table");
 
-				operacoes.excluir(Integer.parseInt(id));
-				Produto produto = new Produto();
-				produto.setId(Integer.parseInt(id));
+				removerProduto(request);
 				setID(request);
 
 				logger.info("Deletando Produto");
@@ -132,19 +114,56 @@ public class ProdutoServlet extends HttpServlet {
 			setID(request);
 		}
 
-		List<Produto> listaProdutos = (List<Produto>) operacoes.listar();
-		request.setAttribute("listaproduto", listaProdutos);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("produtoForm.jsp");
-		dispatcher.forward(request, response);
+		getAll(request, response);
 
 		// logger.info("Messagem de erro");
 		logger.info("Ações concluidas");
 	}
 
 	private void setID(HttpServletRequest request) {
-
 		request.setAttribute("produtoId", id);
+	}
 
+	private void getAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		List<Produto> listaProdutos = (List<Produto>) operacoes.listar();
+		request.setAttribute("listaproduto", listaProdutos);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("produtoForm.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	private void salvarProduto(HttpServletRequest request) throws ServletException, IOException {
+
+		int idProd = Integer.parseInt(request.getParameter(ID_PROD));
+		String nome = request.getParameter(NOM_PROD);
+		String descricao = request.getParameter(DESC_PROD);
+		int qnt = Integer.parseInt(request.getParameter(QNT_PROD));
+		String obs = request.getParameter(OBS_PROD);
+		Produto produto = new Produto(idProd, nome, descricao, qnt, obs);
+
+		logger.debug("Criando novo");
+
+		Produto produtoMapa = (Produto) operacoes.obter(idProd);
+		if (produtoMapa == null) {
+			id = operacoes.proximoId();
+		}
+		operacoes.salvar(produto);
+	}
+
+	private void editarProduto(HttpServletRequest request) {
+		String id = request.getParameter("id_table");
+		Produto produtoEditar = (Produto) operacoes.obter(Integer.parseInt(id));
+		request.setAttribute("produto", produtoEditar);
+		request.setAttribute("produtoId", Integer.parseInt(id));
+		request.setAttribute("ocultar", "true");
+	}
+
+	private void removerProduto(HttpServletRequest request) throws NumberFormatException, IOException {
+		String id = request.getParameter("id_table");
+
+		operacoes.excluir(Integer.parseInt(id));
+		Produto produto = new Produto();
+		produto.setId(Integer.parseInt(id));
 	}
 
 }
