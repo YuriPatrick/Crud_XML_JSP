@@ -34,6 +34,15 @@
 
 	<div class="center">
 
+		<h3>File Upload:</h3>
+		Select a file to upload: <br />
+		<form action="cliente" method="get"
+			enctype="multipart/form-data">
+			<input type="file" name="file" size="50" /> <br /> <input
+				type="submit" value="Download File" />
+		</form>
+
+
 		<!-- Form para carregar os dados no XML -->
 		<form name="form" action="cliente" class="form form-horizontal"
 			method="post" style="margin-left: 1%; margin-top: 1%">
@@ -102,7 +111,7 @@
 						class="btn btn-info">Salvar</button>
 				</div>
 			</div>
-
+			
 		</form>
 	</div>
 

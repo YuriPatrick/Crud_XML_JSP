@@ -78,6 +78,6 @@ class OperacoesCL {
 		Assert.assertEquals("111.123.313-31", lista.get(1).getCpf());
 		Assert.assertEquals("2020-01-01", lista.get(1).getDataNascimento());
 		Assert.assertEquals("teste", lista.get(1).getLocalidade());
-
+		
 	}
 }
