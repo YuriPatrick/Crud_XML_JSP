@@ -102,29 +102,6 @@ public class ClienteServlet extends HttpServlet {
 
 		getAll(request, response);
 
-		uploadExcel(response);
-
-	}
-
-	private void uploadExcel(HttpServletResponse response) {
-		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("Content-Disposition", "attachment; filename=downloadArq.xls");
-		HSSFWorkbook workbook = new HSSFWorkbook();
-
-		try {
-			workbook.write(response.getOutputStream());
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} // Write workbook to response.
-		try {
-			workbook.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	private void setID(HttpServletRequest request) {

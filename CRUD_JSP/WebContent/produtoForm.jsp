@@ -111,7 +111,7 @@
 			action="produto" class="form form-horizontal" method="post">
 
 			<%
-				List<Produto> listaProdutos = (List<Produto>) request.getAttribute("listaproduto");
+			List<Produto> listaProdutos = (List<Produto>) request.getAttribute("listaproduto");
 			request.setAttribute("produto", listaProdutos);
 			%>
 			<br>
@@ -155,14 +155,14 @@
 							onclick="setAction_form2('exporte')" class="btn btn-info">Exporte</button>
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<div class="col-md-3">
 						<button type="submit" value="importe"
 							onclick="setAction_form2('importe')" class="btn btn-info">Importe</button>
 					</div>
 				</div>
-				
+
 				Select a file to upload: <br /> <input type="file" name="file"
 					size="50" /> <br /> <input type="submit"
 					onclick="setAction_form2('importe')" value="Download File" />

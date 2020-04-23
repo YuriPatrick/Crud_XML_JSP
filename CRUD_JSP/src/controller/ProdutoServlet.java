@@ -40,7 +40,7 @@ import operation.OperacoesImplProduto;
  * Servlet implementado o produto com requisições das operações de salvar,
  * editar, deletar, listar e exportar com POI excel. {@link HttpServlet}
  */
-@WebServlet(name = "ProdutoServlet", value = "/produto")
+@WebServlet(name = "ProdutoServlet", value = "/produto", loadOnStartup = 1)
 public class ProdutoServlet extends HttpServlet {
 
 	private static final Logger logger = Logger.getLogger(ManipulaXMLProduto.class);
@@ -121,8 +121,8 @@ public class ProdutoServlet extends HttpServlet {
 				return;
 
 			} else if (acao.equals("importe")) {
-
-				uploadExcel(response, request);
+				//Em manutenção função upload
+				//uploadExcel(response, request);
 
 			} else if (acao.equals("editar")) {
 
