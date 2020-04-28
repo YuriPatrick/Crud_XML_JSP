@@ -1,33 +1,30 @@
 package controller;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.apache.commons.collections4.IteratorUtils;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.ss.examples.CellStyleDetails;
-import org.apache.poi.ss.format.CellFormatType;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddressBase.CellPosition;
-import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -37,10 +34,15 @@ import operation.Operacoes;
 import operation.OperacoesImplProduto;
 
 /**
- * Servlet implementado o produto com requisições das operações de salvar,
- * editar, deletar, listar e exportar com POI excel. {@link HttpServlet}
+ * Servlet implementado o produto com requisições e respostas das operações de
+ * salvar, editar, listar, deletar e com as funções para exportar e importar dados 
+ * via excel com Apache POI. {@link HttpServlet}
  */
 @WebServlet(name = "ProdutoServlet", value = "/produto", loadOnStartup = 1)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+		maxFileSize = 1024 * 1024 * 10, // 10MB
+		maxRequestSize = 1024 * 1024 * 50) // 50MB
+
 public class ProdutoServlet extends HttpServlet {
 
 	private static final Logger logger = Logger.getLogger(ManipulaXMLProduto.class);
@@ -61,11 +63,9 @@ public class ProdutoServlet extends HttpServlet {
 
 	private static final String CAMINHO_ARQUIVO = "C:\\Users\\f0fp631\\Documents\\Produtos.xml";
 
-	private static final String FILE_NAME = "C:\\Users\\f0fp631\\Downloads\\produtoList.xlsx";
-
-	private static final String UPLOAD_DIR = "teste";
-
 	private Operacoes<Object> operacoes;
+
+	private static final String SAVE_DIR = "uploadFiles";
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -87,9 +87,9 @@ public class ProdutoServlet extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response) Metodo doPost com as requisições de salvar,editar e deletar.
-	 *      auto_increment.
-	 * 
+	 *      response) Método doPost com requisições e respostas das operações
+	 *      salvar,editar,listar,deletar e com as funções para exportar e importar
+	 *      dados via excel.
 	 * @param HttpServletRequest  request
 	 * @param HttpServletResponse response
 	 */
@@ -114,53 +114,149 @@ public class ProdutoServlet extends HttpServlet {
 				salvarProduto(request);
 				setID(request);
 
-				logger.info("Salvado Produto");
+				logger.info("Produto Salvo");
 
 			} else if (acao.equals("exporte")) {
-				exporteExcelCliente(request, response);
+				exportExcel(response);
 				return;
 
 			} else if (acao.equals("importe")) {
-				//Em manutenção função upload
-				//uploadExcel(response, request);
+
+				logger.info("Importe Produto");
+
+				// String appPath = request.getServletContext().getRealPath("");
+				String appPath = "C:\\Users\\f0fp631\\Documents";
+				String savePath = appPath + File.separator + SAVE_DIR;
+
+				File fileSaveDir = new File(savePath);
+				if (!fileSaveDir.exists()) {
+					fileSaveDir.mkdir();
+				}
+
+				Part p = request.getPart("file");
+
+				InputStream is = p.getInputStream();
+
+				byte[] b = IOUtils.toByteArray(is);
+
+				FileOutputStream fos = null;
+
+				String caminho = savePath + File.separator + "teste.xls";
+
+				try {
+					// create new file output stream
+					fos = new FileOutputStream(caminho);
+
+					// writes bytes to the output stream
+					fos.write(b);
+
+					// flushes the content to the underlying stream
+					fos.flush();
+
+				} catch (Exception ex) {
+
+					// if an error occurs
+					ex.printStackTrace();
+
+				}
+
+				uploadExcel(caminho);
 
 			} else if (acao.equals("editar")) {
 
 				editarProduto(request);
-				logger.info("Editado Produto");
+				logger.info("Produto Editado");
 
 			} else if (acao.equals("deletar")) {
 
 				removerProduto(request);
 				setID(request);
 
-				logger.info("Deletando Produto");
+				logger.info("Produto Deletado");
 
 			} else if (acao.equals("padrao")) {
 				setID(request);
 			}
 
-		} else {
+		} else
+
+		{
 			setID(request);
 		}
 
 		getAll(request, response);
 
-		// logger.info("Messagem de erro");
 		logger.info("Ações concluidas");
+
+	}
+	
+	/**
+	 * Método uploadExcel para importar os dados no arquivo XML e para a listagem da importação do excel.
+	 * @param String upload
+	 */
+	private void uploadExcel(String upload) throws IOException, ServletException {
+
+		List<Produto> produtos = new ArrayList<>();
+
+		// Recuparando o arquivo
+		FileInputStream excelFile = new FileInputStream(new File(upload));
+		Workbook workbook = new XSSFWorkbook(excelFile);
+
+		// Setando a aba
+		Sheet sheet = workbook.getSheetAt(0);
+
+		// Setando as linhas
+		List<Row> rows = (List<Row>) toList(sheet.iterator());
+
+		// Remover o cabeçalho
+		rows.remove(0);
+
+		rows.forEach(row -> {
+
+			// Setando as celulas
+			List<Cell> cells = (List<Cell>) toList(row.cellIterator());
+
+			Produto p = new Produto();
+
+			p.setId((int) cells.get(0).getNumericCellValue());
+			p.setNome(cells.get(1).getStringCellValue());
+			p.setDescricao(cells.get(2).getStringCellValue());
+			p.setQnt((int) cells.get(3).getNumericCellValue());
+			p.setObs(cells.get(4).getStringCellValue());
+
+			produtos.add(p);
+
+			try {
+				operacoes.salvar(p);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		});
+
+	}
+	
+	/**
+	 * Método toList para retornar uma lista de Iterator na leitura das rows e cells do Excel.
+	 */
+	private List<?> toList(Iterator<?> iterator) {
+		return IteratorUtils.toList(iterator);
 	}
 
-	private void exporteExcelCliente(HttpServletRequest request, HttpServletResponse response)
+	/**
+	 * @see HttpServlet#doPost(HttpServletResponse response) 
+	 * Método exporteExcel com a resposta para exporta os dados salvo do XML.
+	 * @param HttpServletRequest  request
+	 */
+	private void exportExcel(HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Content-Disposition", "attachment;filename=produtoList.xlsx");
-		
-		//Cria o workbook 
+
 		XSSFWorkbook wb = new XSSFWorkbook();
 		XSSFSheet sheet = wb.createSheet("list");
 		List<Produto> listaProdutos = (List<Produto>) operacoes.listar();
 
-		// Definindo alguns padroes de layout
 		sheet.setDefaultColumnWidth(20);
 		sheet.setDefaultRowHeight((short) 400);
 		sheet.setHorizontallyCenter(true);
@@ -208,72 +304,21 @@ public class ProdutoServlet extends HttpServlet {
 
 	}
 
-	private void uploadExcel(HttpServletResponse response, HttpServletRequest request)
-			throws IOException, ServletException {
-
-		String excelFilePath = "C:\\Users\\f0fp631\\Downloads\\produtoList.xlsx";
-
-		int batchSize = 20;
-
-		long start = System.currentTimeMillis();
-
-		FileInputStream inputStream = new FileInputStream(excelFilePath);
-
-		Workbook workbook = new XSSFWorkbook(inputStream);
-
-		Sheet firstSheet = workbook.getSheetAt(0);
-		Iterator<Row> rowIterator = firstSheet.iterator();
-
-		int idProd = Integer.parseInt(request.getParameter(ID_PROD));
-		String nome = request.getParameter(NOM_PROD);
-		String descricao = request.getParameter(DESC_PROD);
-		int qnt = Integer.parseInt(request.getParameter(QNT_PROD));
-		String obs = request.getParameter(OBS_PROD);
-		Produto produto = new Produto(idProd, nome, descricao, qnt, obs);
-
-		int count = 0;
-
-		rowIterator.next(); // skip the header row
-
-		while (rowIterator.hasNext()) {
-			Row nextRow = rowIterator.next();
-			Iterator<Cell> cellIterator = nextRow.cellIterator();
-
-			while (cellIterator.hasNext()) {
-				Cell nextCell = cellIterator.next();
-
-				int columnIndex = nextCell.getColumnIndex();
-
-				switch (columnIndex) {
-				case 0:
-					int id = (int) nextCell.getNumericCellValue();
-					produto.setId(id);
-					break;
-				case 1:
-					String nomePrd = nextCell.getStringCellValue();
-					produto.setNome(nomePrd);
-				case 2:
-					String descProd = nextCell.getStringCellValue();
-					produto.setDescricao(descProd);
-				case 3:
-					int qntProd = (int) nextCell.getNumericCellValue();
-					produto.setQnt(qntProd);
-				case 4:
-					String obsProd = nextCell.getStringCellValue();
-					produto.setObs(obsProd);
-				}
-			}
-			operacoes.salvar(produto);
-		}
-
-		workbook.close();
-
-	}
-
+	/**
+	 * @see HttpServlet#setID(HttpServletRequest request) 
+	 * Método setID com a requisição de settar o ID no novo produto ao salvar.
+	 * @param HttpServletRequest request
+	 */
 	private void setID(HttpServletRequest request) {
 		request.setAttribute("produtoId", id);
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
+	 * Método getAll com a requisição e resposta para listar os dados da lista salva no XML.
+	 * @param HttpServletRequest  request
+	 * @param HttpServletResponse response
+	 */
 	private void getAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		List<Produto> listaProdutos = (List<Produto>) operacoes.listar();
@@ -282,6 +327,11 @@ public class ProdutoServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
+	 * Método salvarProduto com a requisição para salvar no XML.
+	 * @param HttpServletRequest  request
+	 */
 	private void salvarProduto(HttpServletRequest request) throws ServletException, IOException {
 
 		int idProd = Integer.parseInt(request.getParameter(ID_PROD));
@@ -300,6 +350,11 @@ public class ProdutoServlet extends HttpServlet {
 		operacoes.salvar(produto);
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
+	 * Método editarProduto com a requisição para editar os dados da lista e salvar as alterações no XML.
+	 * @param HttpServletRequest  request
+	 */
 	private void editarProduto(HttpServletRequest request) {
 		String id = request.getParameter("id_table");
 		Produto produtoEditar = (Produto) operacoes.obter(Integer.parseInt(id));
@@ -308,6 +363,11 @@ public class ProdutoServlet extends HttpServlet {
 		request.setAttribute("ocultar", "true");
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
+	 * Método removerProduto com a requisição para remover os dados da lista e salvar no XML.
+	 * @param HttpServletRequest  request
+	 */
 	private void removerProduto(HttpServletRequest request) throws NumberFormatException, IOException {
 		String id = request.getParameter("id_table");
 

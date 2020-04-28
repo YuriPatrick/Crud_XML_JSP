@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -18,10 +17,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import dao.ManipulaXMLCliente;
 import model.Cliente;
-import model.Clientes;
 import net.vidageek.mirror.dsl.Mirror;
 import operation.OperacoesImplCliente;
 
+
+/**
+ * Classe de teste JUnit responsável nos testes das operações de salvar e gravar do arquivo XML {@link ManipulaXMLCliente}
+ **/
 @RunWith(PowerMockRunner.class)
 class OperacoesCL {
 

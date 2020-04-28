@@ -1,4 +1,4 @@
-package test;
+package tests;
 
 import dao.ManipulaXMLCliente;
 import model.Cliente;

@@ -8,7 +8,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
- * Classe TagLib para ocultar botão.  
+ * Classe TagLib para ocultar o input ID Cliente.  
 */
 public class TagLibIDcliente extends TagSupport {
 	private static final long serialVersionUID = 1L;

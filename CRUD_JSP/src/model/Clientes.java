@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Classe responsável na manipulação do cliente pelo ID do HashMap {@link Cliente}
+ * Classe responsável com as funções de manipulação do cliente com HashMap {@link Cliente}
  **/
 public class Clientes {
 	private Map<Integer, Cliente> clientes = new HashMap<>();

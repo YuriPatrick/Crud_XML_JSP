@@ -11,6 +11,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -42,12 +43,13 @@
 <body>
 
 	<jsp:include page="index.jsp" />
-
+	
 	<div class="center">
-
+	
 		<!-- Form para carregar os dados no XML -->
+		
 		<form onSubmit="return validar();" name="form" action="produto"
-			class="form form-horizontal" method="post"
+			class="form form-horizontal" method="post" 
 			style="margin-left: 1%; margin-top: 1%">
 
 			<input type="hidden" name="acao_form" value="padrao" /> <input
@@ -104,11 +106,11 @@
 	</div>
 
 
-	<dir class="right">
-
+	 <dir class="right"> 
 		<!-- Form para listagem e edição dos dados no XML -->
+		
 		<form onSubmit="return desabilitar();" name="form_table"
-			action="produto" class="form form-horizontal" method="post">
+			action="produto" class="form form-horizontal" method="post" enctype="multipart/form-data">
 
 			<%
 			List<Produto> listaProdutos = (List<Produto>) request.getAttribute("listaproduto");
@@ -155,27 +157,20 @@
 							onclick="setAction_form2('exporte')" class="btn btn-info">Exporte</button>
 					</div>
 				</div>
-
-				<div class="form-group">
-					<div class="col-md-3">
-						<button type="submit" value="importe"
-							onclick="setAction_form2('importe')" class="btn btn-info">Importe</button>
-					</div>
-				</div>
-
-				Select a file to upload: <br /> <input type="file" name="file"
-					size="50" /> <br /> <input type="submit"
-					onclick="setAction_form2('importe')" value="Download File" />
+								
+				Select a file to upload: <br /> 
+				<input type="file" name="file" size="60" /> <br/> 
+				<input type="submit" onclick="setAction_form2('importe')" value="Upload" />
+								
 
 			</div>
 
-			<input type="hidden" name="acao_form" /> <input type="hidden"
-				name="id_table" />
+			<input type="hidden" name="acao_form" /> 
+			<input type="hidden" name="id_table" />
 		</form>
-
+		
 	</dir>
-
-
+	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

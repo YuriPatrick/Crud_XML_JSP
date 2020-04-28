@@ -1,4 +1,4 @@
-package test;
+package tests;
 
 import org.apache.log4j.Logger;
 

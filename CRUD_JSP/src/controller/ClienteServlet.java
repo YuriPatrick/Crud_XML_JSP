@@ -23,11 +23,10 @@ import model.Cliente;
 import operation.Operacoes;
 import operation.OperacoesImplCliente;
 
-/**
- * Servlet implementado o cliente com requisições da operação de salvar.
- * {@link HttpServlet}
- */
 
+/**
+ * Servlet implementado o cliente com requisições e respostas das operações de salvar e listar. {@link HttpServlet}
+ */
 @WebServlet(name = "ClienteServlet", value = "/cliente")
 public class ClienteServlet extends HttpServlet {
 
@@ -69,13 +68,11 @@ public class ClienteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
-
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response) Metodo doPost com a requisição de salvar. auto_increment.
-	 * 
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
+	 * Método doPost com a requisição de salvar e com auto_increment.
 	 * @param HttpServletRequest  request
 	 * @param HttpServletResponse response
 	 */
@@ -86,13 +83,13 @@ public class ClienteServlet extends HttpServlet {
 
 		String acao = request.getParameter("acao_form");
 
-		logger.info("iniciando ação");
+		logger.info("Ação iniciado");
 		logger.debug("debug");
 
 		if (acao != null && acao.equalsIgnoreCase("salvar")) {
 
 			salvarCliente(request);
-			logger.info("Salvado Cliente");
+			logger.info("Cliente Salvo");
 
 			setID(request);
 
@@ -104,24 +101,38 @@ public class ClienteServlet extends HttpServlet {
 
 	}
 
+	/**
+	 * @see HttpServlet#setID(HttpServletRequest request) 
+	 * Método setID com a requisição de settar o ID no novo cliente ao salvar.
+	 * @param HttpServletRequest request
+	 */
 	private void setID(HttpServletRequest request) {
 
 		request.setAttribute("clienteId", id);
-
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
+	 * Método getAll com a requisição e resposta para listar os dados da lista salva no XML.
+	 * @param HttpServletRequest  request
+	 * @param HttpServletResponse response
+	 */
 	private void getAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		List<Cliente> listaClientes = ((OperacoesImplCliente) operacoes).listar();
 		request.setAttribute("listacliente", listaClientes);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("clienteForm.jsp");
 		dispatcher.forward(request, response);
-
 	}
-
+	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
+	 * Método salvarCliente com a requisição para salvar no XML.
+	 * @param HttpServletRequest  request
+	 */
 	private void salvarCliente(HttpServletRequest request) throws IOException {
 
-		logger.debug("Criando novo");
+		logger.debug("Criando novo cliente");
 		int idClie = Integer.parseInt(request.getParameter(ID_CLIE));
 		String nomeClie = request.getParameter(NOM_CLIE);
 		String sobreClie = request.getParameter(SOBRE_CLIE);

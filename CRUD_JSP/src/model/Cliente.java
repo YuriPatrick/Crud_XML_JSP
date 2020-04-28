@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Classe Cliente
+ * Classe model com os atributos do Cliente
  **/
 public class Cliente {
 	private int id;

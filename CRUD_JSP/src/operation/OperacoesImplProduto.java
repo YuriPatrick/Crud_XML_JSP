@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import dao.ManipulaXML;
-import dao.ManipulaXMLCliente;
 import dao.ManipulaXMLProduto;
-import model.Clientes;
 import model.Produto;
 import model.Produtos;
 
@@ -69,5 +67,5 @@ public class OperacoesImplProduto implements Operacoes<Object> {
 		}
 		return lista;
 	}
-
+	
 }

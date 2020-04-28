@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Classe responsável na manipulação do produto pelo ID do HashMap
- * {@link Produto}
+ * Classe responsável com as funções de manipulação do Produto com HashMap {@link Produto}
  **/
 public class Produtos {
 	private Map<Integer, Produto> produtos = new HashMap<>();

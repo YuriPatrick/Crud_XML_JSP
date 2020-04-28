@@ -1,9 +1,6 @@
 package testJUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.IOException;
-import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,13 +19,16 @@ import model.Clientes;
 import net.vidageek.mirror.dsl.Mirror;
 import operation.OperacoesImplCliente;
 
+/**
+ * Classe de teste JUnit responsável no teste da operação gravar do arquivo XML
+ * {@link ManipulaXMLCliente}
+ **/
 @RunWith(PowerMockRunner.class)
 class ManipulaXMLClienteTest {
 
 	@InjectMocks
 	ManipulaXMLCliente manipulaXMLCliente;
 
-	
 	@Mock
 	OperacoesImplCliente operacoesCliente;
 

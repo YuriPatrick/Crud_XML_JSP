@@ -35,7 +35,6 @@ import model.Produtos;
 public class ManipulaXMLProduto implements ManipulaXML<Object> {
 
 	private static final Logger logger = Logger.getLogger(ManipulaXMLProduto.class);
-
 	DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder docBuilder;
 	Document doc;
@@ -49,8 +48,8 @@ public class ManipulaXMLProduto implements ManipulaXML<Object> {
 	}
 
 	/**
-	 * Manipular a gravação dos dados em XML usando a bibliote Document e usando o
-	 * metodo HashMap para a gravação dos dados em lista {@link ManipulaXML}
+	 * Método para manipular a gravação dos dados em XML usando a bibliote Document e usando as
+	 * funções do HashMap para a gravação dos dados em lista {@link ManipulaXML}
 	 */
 	@Override
 	public void gravar(Object p) {
@@ -147,8 +146,8 @@ public class ManipulaXMLProduto implements ManipulaXML<Object> {
 	}
 
 	/**
-	 * Manipular a leitura dos dados em XML usando a bibliote Document e usando o
-	 * metodo HashMap para a leitura dos dados {@link ManipulaXML}
+	 * Método para manipular a leitura dos dados em XML usando a bibliote Document e usando as
+	 * funções do HashMap para a leitura dos dados {@link ManipulaXML}
 	 */
 	@Override
 	public Produtos ler() {

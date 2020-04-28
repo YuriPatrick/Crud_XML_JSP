@@ -46,8 +46,8 @@ public class ManipulaXMLCliente implements ManipulaXML<Object> {
 	}
 
 	/**
-	 * Manipular a gravação dos dados em XML usando a bibliote Document e usando o
-	 * metodo HashMap para a gravação dos dados em lista {@link ManipulaXML}
+	 * Método para manipular a gravação dos dados em XML usando a bibliote Document e usando as
+	 * funções do HashMap para a gravação dos dados em lista {@link ManipulaXML}
 	 */
 	@Override
 	public void gravar(Object c) {
@@ -134,8 +134,8 @@ public class ManipulaXMLCliente implements ManipulaXML<Object> {
 	}
 
 	/**
-	 * Manipular a leitura dos dados em XML usando a bibliote Document e usando o
-	 * metodo HashMap para a leitura dos dados {@link ManipulaXML}
+	 * Método para manipular a leitura dos dados em XML usando a bibliote Document e usando as
+	 * funções do HashMap para a leitura dos dados {@link ManipulaXML}
 	 */
 	@Override
 	public Object ler() {

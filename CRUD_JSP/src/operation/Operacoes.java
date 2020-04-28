@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import model.Clientes;
-import model.Produto;
 import model.Produtos;
 
 /**
@@ -12,7 +11,8 @@ import model.Produtos;
  **/
 public interface Operacoes <T>{
 
-	/** Inserir e atualizar {@link Generic} **/
+	/** Inserir e atualizar {@link Generic} 
+	 * @return **/
 	public void salvar(T t) throws IOException;
 
 	/** Excluir {@link Generic} */

@@ -2,7 +2,7 @@ package model;
 
 
 /**
- * Classe Produto
+ * Classe model com os atributos do Produto
  **/
 public class Produto {
 
