@@ -19,7 +19,7 @@ import model.Produto;
 import operation.OperacoesImplProduto;
 
 public class TestLeituraExcel {
-	
+
 	private static final String CAMINHO_ARQUIVO = "C:\\Users\\f0fp631\\Documents\\Produtos.xml";
 	private static final String FILE_NAME = "C:\\Users\\f0fp631\\Downloads\\produtoList.xlsx";
 
@@ -27,6 +27,50 @@ public class TestLeituraExcel {
 
 		OperacoesImplProduto op = new OperacoesImplProduto(CAMINHO_ARQUIVO);
 
+		List<Produto> produtos = new ArrayList<>();
+
+		// Recuparando o arquivo
+		FileInputStream excelFile = new FileInputStream(new File(FILE_NAME));
+		Workbook workbook = new XSSFWorkbook(excelFile);
+
+		// Setando a aba
+		Sheet sheet = workbook.getSheetAt(0);
+
+		// Setando as linhas
+		List<Row> rows = (List<Row>) toList(sheet.iterator());
+
+		// Remover os cabeçalhos
+		rows.remove(0);
+
+		rows.forEach(row -> {
+
+			// Setando as celulas
+			List<Cell> cells = (List<Cell>) toList(row.cellIterator());
+
+			Produto p = new Produto();
+
+			p.setId((int) cells.get(0).getNumericCellValue());
+			p.setNome(cells.get(1).getStringCellValue());
+			p.setDescricao(cells.get(2).getStringCellValue());
+			p.setQnt((int) cells.get(3).getNumericCellValue());
+			p.setObs(cells.get(4).getStringCellValue());
+
+			produtos.add(p);
+
+			try {
+				op.salvar(p);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		});
+
+		return produtos;
+
+	}
+
+	public static void validacaoExcel() throws IOException {
 		List<Produto> produtos = new ArrayList<Produto>();
 
 		try {
@@ -39,17 +83,13 @@ public class TestLeituraExcel {
 			Sheet sheet = workbook.getSheetAt(0);
 
 			Iterator<Row> rowIterator = sheet.iterator();
-						
+
 			while (rowIterator.hasNext()) {
 				Row row = rowIterator.next();
 				Iterator<Cell> cellIterator = row.cellIterator();
-				
-				row = workbook.getSheetAt(0).getRow(0);
-				row.removeCell(row.getCell(1));
-				
+
 				Produto p = new Produto();
-				produtos.add(p);
-				//op.salvar(p);
+				// op.salvar(p);
 
 				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
@@ -78,8 +118,6 @@ public class TestLeituraExcel {
 			e.printStackTrace();
 			System.out.println("Arquivo Excel não encontrado!");
 		}
-		
-		return produtos;
 	}
 
 	public static List<?> toList(Iterator<?> iterator) {
@@ -90,4 +128,18 @@ public class TestLeituraExcel {
 	public void imprimir(List<Produto> produtos) {
 		produtos.forEach(System.out::println);
 	}
+
+	/*
+	 * public static boolean isCellEmpty(final XSSFCell cell) { if (cell == null) {
+	 * // use row.getCell(x, Row.CREATE_NULL_AS_BLANK) to avoid null cells return
+	 * true; }
+	 * 
+	 * if (cell.getCellType() == Cell.CELL_TYPE_BLANK) { return true; }
+	 * 
+	 * if (cell.getCellType() == Cell.CELL_TYPE_STRING &&
+	 * cell.getStringCellValue().trim().isEmpty()) { return true; }
+	 * 
+	 * return false; }
+	 * 
+	 */
 }

@@ -14,9 +14,11 @@ public class TestExcel {
 
 		TestLeituraExcel excel = new TestLeituraExcel();
 		
-		List<Produto> produtos = TestLeituraExcel.criar();
+		List<Produto> produtos = excel.criar();
 		
-		excel.imprimir(produtos);
+		excel.validacaoExcel();
+		
+		//excel.imprimir(produtos);
 
 	}
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import dao.ManipulaXML;
+import dao.Manipula;
 import dao.ManipulaXMLCliente;
 import model.Cliente;
 import model.Clientes;
@@ -17,7 +17,7 @@ import model.Clientes;
 public class OperacoesImplCliente implements Operacoes<Object> {
 
 	private Clientes clientes;
-	private ManipulaXML<Object> manipulaXml;
+	private Manipula<Object> manipulaXml;
 
 	public OperacoesImplCliente() {
 	}

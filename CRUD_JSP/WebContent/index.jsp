@@ -17,12 +17,15 @@
 <body>
 
 
+
 	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+	
+		
 		<header class="masthead mb-auto">
 		<div class="inner">
 			<h3 class="masthead-brand">Controle de Produto</h3>
-			<nav class="nav nav-masthead justify-content-center"> <a
-				class="nav-link active" href="./produto">Produto</a> <a
+			<nav class="nav nav-masthead justify-content-center"> 
+			<a class="nav-link active" href="./novo-produto">Produto</a> <a
 				class="nav-link active" href="./cliente">Cliente </a> </nav>
 		</div>
 		</header>

@@ -31,7 +31,7 @@ import model.Clientes;
 /**
  * Classe responsável na manipulação do XML {@link ManipulaXML}
  **/
-public class ManipulaXMLCliente implements ManipulaXML<Object> {
+public class ManipulaXMLCliente implements Manipula<Object> {
 
 	DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder docBuilder;

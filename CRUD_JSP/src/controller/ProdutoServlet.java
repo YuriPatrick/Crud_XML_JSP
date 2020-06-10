@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,9 +22,19 @@ import javax.servlet.http.Part;
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.EmptyFileException;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Color;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -35,8 +46,8 @@ import operation.OperacoesImplProduto;
 
 /**
  * Servlet implementado o produto com requisições e respostas das operações de
- * salvar, editar, listar, deletar e com as funções para exportar e importar dados 
- * via excel com Apache POI. {@link HttpServlet}
+ * salvar, editar, listar, deletar e com as funções para exportar e importar
+ * dados via excel com Apache POI. {@link HttpServlet}
  */
 @WebServlet(name = "ProdutoServlet", value = "/produto", loadOnStartup = 1)
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
@@ -98,6 +109,8 @@ public class ProdutoServlet extends HttpServlet {
 
 		Logger logger = Logger.getLogger("controller.ProdutoServlet");
 
+		boolean redirect = true;
+
 		// logs debug
 		if (logger.isDebugEnabled()) {
 			logger.debug("ProdutoServlet.doPost()");
@@ -121,6 +134,8 @@ public class ProdutoServlet extends HttpServlet {
 				return;
 
 			} else if (acao.equals("importe")) {
+
+				//redirect = false;
 
 				logger.info("Importe Produto");
 
@@ -160,7 +175,7 @@ public class ProdutoServlet extends HttpServlet {
 
 				}
 
-				uploadExcel(caminho);
+				uploadExcel(caminho, response);
 
 			} else if (acao.equals("editar")) {
 
@@ -183,23 +198,36 @@ public class ProdutoServlet extends HttpServlet {
 		{
 			setID(request);
 		}
-
+		
 		getAll(request, response);
 
+		/*
+		if (redirect) {
+			
+
+		}
+		
+		*/
+		 
 		logger.info("Ações concluidas");
 
 	}
-	
+
 	/**
-	 * Método uploadExcel para importar os dados no arquivo XML e para a listagem da importação do excel.
+	 * Método uploadExcel para importar os dados no arquivo XML e para a listagem da
+	 * importação do excel.
+	 * 
 	 * @param String upload
 	 */
-	private void uploadExcel(String upload) throws IOException, ServletException {
+	private void uploadExcel(String upload, HttpServletResponse response) throws IOException, ServletException {
 
 		List<Produto> produtos = new ArrayList<>();
 
 		// Recuparando o arquivo
 		FileInputStream excelFile = new FileInputStream(new File(upload));
+		
+		try {
+		
 		Workbook workbook = new XSSFWorkbook(excelFile);
 
 		// Setando a aba
@@ -231,25 +259,97 @@ public class ProdutoServlet extends HttpServlet {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
+			
 		});
+		
+		}catch (EmptyFileException e) {
+			System.out.print("Nenhum arquivo escolhido para upload");
+		}
+
+		/*
+		 * while (iterator.hasNext()) { Row linhaAtual = iterator.next(); Short lastCell
+		 * = linhaAtual.getLastCellNum();
+		 * 
+		 * Iterator<Cell> iteratorCell = linhaAtual.cellIterator();
+		 * 
+		 * List<Cell> cells = (List<Cell>) toList(linhaAtual.cellIterator());
+		 * 
+		 * Produto p = new Produto(); p.setId((int) cells.get(0).getNumericCellValue());
+		 * p.setNome(cells.get(1).getStringCellValue());
+		 * p.setDescricao(cells.get(2).getStringCellValue()); p.setQnt((int)
+		 * cells.get(3).getNumericCellValue());
+		 * p.setObs(cells.get(4).getStringCellValue());
+		 * 
+		 * produtos.add(p);
+		 * 
+		 * try { operacoes.salvar(p); } catch (IOException e) { e.printStackTrace(); }
+		 * 
+		 * }
+		 */
+
+		//validacaoUpload(upload, response);
 
 	}
-	
+
+	private void validacaoUpload(String upload, HttpServletResponse response) throws IOException {
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Content-Disposition", "attachment;filename=ValidaCaoProduto.xlsx");
+
+		// Recuparando o arquivo
+		FileInputStream excelFile = new FileInputStream(new File(upload));
+		Workbook wb = new XSSFWorkbook(excelFile);
+
+		// Setando a aba
+		Sheet sheet = wb.getSheetAt(0);
+
+		Produto p = new Produto();
+
+		Iterator<Row> iterator = sheet.iterator();
+
+		while (iterator.hasNext()) {
+			Row linhaAtual = iterator.next();
+			Short ultimaCel = linhaAtual.getLastCellNum();
+
+			Iterator<Cell> cellIterator = linhaAtual.iterator();
+			Cell novaCelula = linhaAtual.createCell(ultimaCel, CellType.STRING);
+
+			if (linhaAtual.getRowNum() == 0) {
+				novaCelula.setCellValue("Validação");
+				CellStyle style = wb.createCellStyle();
+				// p.setId((int) novaCelula.getCellType().BLANK);
+				novaCelula.setCellStyle(style);
+			} else {
+
+				Cell cells = cellIterator.next();
+				if (cells != null) {
+					cells.setCellType(CellType.STRING);
+
+					System.out.print(cells.getStringCellValue() + "\t\t");
+				}
+			}
+
+			System.out.print(ultimaCel);
+		}
+
+		wb.write(response.getOutputStream());
+		wb.close();
+
+	}
+
 	/**
-	 * Método toList para retornar uma lista de Iterator na leitura das rows e cells do Excel.
+	 * Método toList para retornar uma lista de Iterator na leitura das rows e cells
+	 * do Excel.
 	 */
 	private List<?> toList(Iterator<?> iterator) {
 		return IteratorUtils.toList(iterator);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletResponse response) 
-	 * Método exporteExcel com a resposta para exporta os dados salvo do XML.
-	 * @param HttpServletRequest  request
+	 * @see HttpServlet#doPost(HttpServletResponse response) Método exporteExcel com
+	 *      a resposta para exporta os dados salvo do XML.
+	 * @param HttpServletRequest request
 	 */
-	private void exportExcel(HttpServletResponse response)
-			throws ServletException, IOException {
+	private void exportExcel(HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Content-Disposition", "attachment;filename=produtoList.xlsx");
 
@@ -305,8 +405,8 @@ public class ProdutoServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#setID(HttpServletRequest request) 
-	 * Método setID com a requisição de settar o ID no novo produto ao salvar.
+	 * @see HttpServlet#setID(HttpServletRequest request) Método setID com a
+	 *      requisição de settar o ID no novo produto ao salvar.
 	 * @param HttpServletRequest request
 	 */
 	private void setID(HttpServletRequest request) {
@@ -314,8 +414,9 @@ public class ProdutoServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
-	 * Método getAll com a requisição e resposta para listar os dados da lista salva no XML.
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response) Método getAll com a requisição e resposta para listar os dados
+	 *      da lista salva no XML.
 	 * @param HttpServletRequest  request
 	 * @param HttpServletResponse response
 	 */
@@ -328,9 +429,9 @@ public class ProdutoServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
-	 * Método salvarProduto com a requisição para salvar no XML.
-	 * @param HttpServletRequest  request
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response) Método salvarProduto com a requisição para salvar no XML.
+	 * @param HttpServletRequest request
 	 */
 	private void salvarProduto(HttpServletRequest request) throws ServletException, IOException {
 
@@ -351,9 +452,10 @@ public class ProdutoServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
-	 * Método editarProduto com a requisição para editar os dados da lista e salvar as alterações no XML.
-	 * @param HttpServletRequest  request
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response) Método editarProduto com a requisição para editar os dados da
+	 *      lista e salvar as alterações no XML.
+	 * @param HttpServletRequest request
 	 */
 	private void editarProduto(HttpServletRequest request) {
 		String id = request.getParameter("id_table");
@@ -364,9 +466,10 @@ public class ProdutoServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
-	 * Método removerProduto com a requisição para remover os dados da lista e salvar no XML.
-	 * @param HttpServletRequest  request
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response) Método removerProduto com a requisição para remover os dados
+	 *      da lista e salvar no XML.
+	 * @param HttpServletRequest request
 	 */
 	private void removerProduto(HttpServletRequest request) throws NumberFormatException, IOException {
 		String id = request.getParameter("id_table");

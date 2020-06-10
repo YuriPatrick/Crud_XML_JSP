@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import dao.ManipulaXML;
+import dao.Manipula;
 import dao.ManipulaXMLProduto;
 import model.Produto;
 import model.Produtos;
@@ -17,7 +17,7 @@ import model.Produtos;
 public class OperacoesImplProduto implements Operacoes<Object> {
 
 	private Produtos produtos;
-	private ManipulaXML<Object> manipulaXml;
+	private Manipula<Object> manipulaXml;
 
 	/** Operação para leitura do arquivo {@link ManipulaXMLProduto} */
 	public OperacoesImplProduto(String caminhoXML) {
