@@ -35,5 +35,8 @@
 	<classpathentry kind="lib" path="C:/Users/f0fp631/eclipse-workspace/projetos/CRUD_JSP/WebContent/WEB-INF/lib/poi-ooxml-4.1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/f0fp631/eclipse-workspace/projetos/CRUD_JSP/WebContent/WEB-INF/lib/poi-scratchpad-4.1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/f0fp631/eclipse-workspace/projetos/CRUD_JSP/WebContent/WEB-INF/lib/poi-ooxml-schemas-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/f0fp631/eclipse-workspace/Projeto CRUD JDBC/SGPC_CRUD/WebContent/WEB-INF/lib/log4j-api-2.13.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/f0fp631/eclipse-workspace/Projeto CRUD JDBC/SGPC_CRUD/WebContent/WEB-INF/lib/log4j-1.2-api-2.13.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/f0fp631/eclipse-workspace/Projeto CRUD JDBC/SGPC_CRUD/WebContent/WEB-INF/lib/log4j-core-2.13.3.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
